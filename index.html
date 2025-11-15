@@ -3,450 +3,486 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neuro Vision: A Hands-Free Interface</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Chosen Palette: Calm Harmony -->
-    <!-- Application Structure Plan: The SPA is designed as a top-down narrative journey. It starts with a broad introduction (Hero), defines the 'why' (The Challenge), presents the 'what' (Our Solution), establishes credibility (Competitive Edge & Market Opportunity), shows the 'how' (Roadmap & Business Model), and concludes with the 'who' (Team). This thematic flow is more intuitive and engaging than a slide-by-slide structure, guiding the user logically from the problem to the solution and its potential impact. Interactions like clickable cards, tabs, and dynamic charts are used to encourage exploration and make data digestible. -->
-    <!-- Visualization & Content Choices: 
-        - Problem/Solution: Report Info -> List of problems and solutions. Goal -> Engage user in discovery. Viz -> Interactive Cards (HTML/CSS/JS). Interaction -> Click to reveal solution. Justification -> More engaging than a static table, creates a direct problem/solution link.
-        - Features: Report Info -> Product features. Goal -> Organize detailed information. Viz -> Tabbed Interface (HTML/CSS/JS). Interaction -> Click to switch content. Justification -> Prevents clutter, allows focused exploration.
-        - Market Segments: Report Info -> Market size data. Goal -> Compare segments. Viz -> Bar Chart (Chart.js). Interaction -> Hover tooltips. Justification -> Ideal for comparing discrete data categories clearly.
-        - Revenue Projections: Report Info -> Year-over-year revenue. Goal -> Show growth over time. Viz -> Line Chart (Chart.js). Interaction -> Buttons to update data by year. Justification -> Dynamically shows growth, more impactful than a static table.
-        - Timeline: Report Info -> Project milestones. Goal -> Display chronological process. Viz -> Horizontal Timeline (HTML/CSS). Interaction -> Hover to highlight. Justification -> More visually appealing and intuitive than a static Gantt chart image.
-    -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <title>Neuro Vision - Eye-Controlled Communication</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #F8F7F4;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
             color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
-        .chart-container {
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: all 0.3s;
             position: relative;
-            width: 100%;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 400px;
-            max-height: 50vh;
         }
-        .nav-link {
-            transition: color 0.3s, border-bottom-color 0.3s;
-            border-bottom: 2px solid transparent;
+
+        nav a:hover {
+            color: #667eea;
         }
-        .nav-link:hover, .nav-link.active {
-            color: #4A90E2;
-            border-bottom-color: #4A90E2;
-        }
-        .card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-        .tab.active {
-            border-color: #4A90E2;
-            background-color: #4A90E2;
-            color: white;
-        }
-        .timeline-item::before {
+
+        nav a::after {
             content: '';
             position: absolute;
-            top: 11px;
-            left: -31px;
-            width: 10px;
-            height: 10px;
-            background-color: #4A90E2;
-            border-radius: 50%;
-            border: 2px solid #F8F7F4;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            color: white;
+            padding: 6rem 0 4rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>');
+            animation: float 20s linear infinite;
+        }
+
+        @keyframes float {
+            from { transform: translateY(0); }
+            to { transform: translateY(-100px); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+            animation: fadeInUp 1s ease-out 0.2s backwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .drive-link-section {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 700px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            animation: fadeInUp 1s ease-out 0.4s backwards;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .drive-link-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .drive-link-section p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .drive-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.7rem;
+            background: white;
+            color: #667eea;
+            padding: 1rem 2.5rem;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .drive-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .drive-icon {
+            width: 24px;
+            height: 24px;
+        }
+
+        section {
+            padding: 5rem 0;
+            background: white;
+        }
+
+        section:nth-child(even) {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .challenge-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #555;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.3);
+            border: 2px solid #667eea;
+        }
+
+        .feature-card h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .market-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: scale(1.05);
+        }
+
+        .stat-card h3 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: white;
+        }
+
+        .roadmap {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .roadmap-item {
+            flex: 1;
+            min-width: 200px;
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+            border-left: 4px solid #667eea;
+        }
+
+        .roadmap-item h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .team-section {
+            text-align: center;
+        }
+
+        .team-member {
+            max-width: 400px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .team-member h3 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: white;
+        }
+
+        .team-member p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        footer {
+            background: #1a1a2e;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .features-grid, .market-stats, .roadmap {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
-<body class="antialiased">
-
-    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
-        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
-            <h1 class="text-2xl font-bold text-gray-800">Neuro Vision</h1>
-            <div class="hidden md:flex space-x-8">
-                <a href="#challenge" class="nav-link">The Challenge</a>
-                <a href="#solution" class="nav-link">Our Solution</a>
-                <a href="#market" class="nav-link">Market</a>
-                <a href="#roadmap" class="nav-link">Roadmap</a>
-                <a href="#team" class="nav-link">Team</a>
-            </div>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">Neuro Vision</div>
+            <ul>
+                <li><a href="#challenge">Challenge</a></li>
+                <li><a href="#solution">Solution</a></li>
+                <li><a href="#market">Market</a></li>
+                <li><a href="#roadmap">Roadmap</a></li>
+                <li><a href="#team">Team</a></li>
+            </ul>
         </nav>
     </header>
 
-    <main>
-        <section id="hero" class="py-20 md:py-32 bg-white">
-            <div class="container mx-auto px-6 text-center">
-                <h2 class="text-4xl md:text-6xl font-bold text-gray-800 leading-tight">Unlock Communication.</h2>
-                <h2 class="text-4xl md:text-6xl font-bold text-blue-600 leading-tight mb-4">Control Your World.</h2>
-                <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
-                    Neuro Vision is a revolutionary assistive technology that empowers users to type, communicate, and control smart devices using only their eye movements and blinks—no hands, no voice, just a standard webcam.
-                </p>
+    <section class="hero">
+        <div class="container hero-content">
+            <h1>Unlock Communication.<br>Control Your World.</h1>
+            <p>Neuro Vision is a revolutionary assistive technology that empowers users to type, communicate, and control smart devices using only their eye movements and blinks—no hands, no voice, just a standard webcam.</p>
+            
+            <div class="drive-link-section">
+                <h2>
+                    <svg class="drive-icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5zm0 18.5c-4.21-1.05-7-5.25-7-9.5V8.3l7-3.5 7 3.5V11c0 4.25-2.79 8.45-7 9.5z"/>
+                        <path d="M10.5 13.5l-2-2L7 13l3.5 3.5L18 9l-1.5-1.5z"/>
+                    </svg>
+                    View Results & Demo
+                </h2>
+                <p>See Neuro Vision in action! Explore our demo videos, test results, and documentation.</p>
+                <a href="https://drive.google.com/drive/folders/1MyvFuTC65za2XLu4UyEqjnmdOFE7wEu1?usp=sharing" target="_blank" class="drive-button">
+                    <svg class="drive-icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                    </svg>
+                    Open Drive Folder
+                </a>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section id="challenge" class="py-16 md:py-24">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-12">
-                    <h3 class="text-3xl md:text-4xl font-bold text-gray-800">The Challenge We Address</h3>
-                    <p class="text-gray-600 mt-2 max-w-2xl mx-auto">Many individuals with physical disabilities face significant barriers in communication and daily life. Existing solutions are often inaccessible due to high cost, complexity, or limitations. We designed Neuro Vision to overcome these specific hurdles.</p>
-                </div>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="problem-solution-grid">
-                </div>
+    <section id="challenge">
+        <div class="container">
+            <h2>The Challenge We Address</h2>
+            <div class="challenge-content">
+                <p>Many individuals with physical disabilities face significant barriers in communication and daily life. Existing solutions are often inaccessible due to high cost, complexity, or limitations. We designed Neuro Vision to overcome these specific hurdles and provide an affordable, intuitive solution that truly empowers users.</p>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section id="solution" class="py-16 md:py-24 bg-white">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-12">
-                    <h3 class="text-3xl md:text-4xl font-bold text-gray-800">An Integrated, Hands-Free Solution</h3>
-                    <p class="text-gray-600 mt-2 max-w-2xl mx-auto">Neuro Vision is more than just a keyboard. It's a comprehensive system designed for independence. Explore our core features to see how we combine communication and environmental control into one seamless, accessible platform.</p>
+    <section id="solution">
+        <div class="container">
+            <h2>An Integrated, Hands-Free Solution</h2>
+            <p style="text-align: center; max-width: 800px; margin: 0 auto 2rem; font-size: 1.1rem; color: #555;">Neuro Vision is more than just a keyboard. It's a comprehensive system designed for independence. Explore our core features to see how we combine communication and environmental control into one seamless, accessible platform.</p>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>⌨️ Virtual Keyboard</h3>
+                    <p>Type naturally using eye movements and blinks. Our intelligent prediction system learns your patterns for faster, more accurate communication.</p>
                 </div>
-                <div>
-                    <div class="flex justify-center mb-8 border-b border-gray-200">
-                        <button data-tab="keyboard" class="tab active text-lg font-medium py-3 px-6 border-b-2">Virtual Keyboard</button>
-                        <button data-tab="iot" class="tab text-lg font-medium py-3 px-6 border-b-2">IoT Control</button>
-                        <button data-tab="tts" class="tab text-lg font-medium py-3 px-6 border-b-2">Text-to-Speech</button>
-                        <button data-tab="features" class="tab text-lg font-medium py-3 px-6 border-b-2">More Features</button>
-                    </div>
-                    <div id="tab-content" class="mt-8 max-w-4xl mx-auto">
-                    </div>
+                <div class="feature-card">
+                    <h3>🏠 IoT Control</h3>
+                    <p>Command your smart home devices with just a glance. Control lights, temperature, entertainment systems, and more—complete environmental independence.</p>
                 </div>
-            </div>
-        </section>
-
-        <section id="market" class="py-16 md:py-24">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-12">
-                    <h3 class="text-3xl md:text-4xl font-bold text-gray-800">Market Opportunity & Growth</h3>
-                    <p class="text-gray-600 mt-2 max-w-2xl mx-auto">The need for affordable assistive technology is immense. Neuro Vision is positioned to serve a large and growing market, both directly to consumers and through institutional partnerships. The data below highlights our potential for significant impact and growth.</p>
+                <div class="feature-card">
+                    <h3>🔊 Text-to-Speech</h3>
+                    <p>Express yourself naturally with high-quality voice synthesis. Choose from multiple voices and languages to match your personal style.</p>
                 </div>
-                <div class="bg-white p-8 rounded-xl shadow-lg mb-12">
-                    <h4 class="text-2xl font-semibold text-center mb-4">Commercial Potential & Target Segments</h4>
-                    <div class="chart-container">
-                        <canvas id="marketPotentialChart"></canvas>
-                    </div>
-                </div>
-                 <div class="bg-white p-8 rounded-xl shadow-lg">
-                    <h4 class="text-2xl font-semibold text-center mb-4">Projected Revenue Growth (INR)</h4>
-                    <div class="chart-container">
-                        <canvas id="revenueProjectionChart"></canvas>
-                    </div>
-                    <div id="revenue-buttons" class="flex justify-center mt-4 space-x-2">
-                        <button data-year="1" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition">Year 1</button>
-                        <button data-year="2" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition">Year 2</button>
-                        <button data-year="3" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition">Year 3</button>
-                        <button data-year="4" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition">Year 4</button>
-                    </div>
+                <div class="feature-card">
+                    <h3>🎯 More Features</h3>
+                    <p>Web browsing, email management, social media integration, and customizable interfaces—all accessible through eye control.</p>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section id="roadmap" class="py-16 md:py-24 bg-white">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-12">
-                    <h3 class="text-3xl md:text-4xl font-bold text-gray-800">Our Project Roadmap</h3>
-                    <p class="text-gray-600 mt-2 max-w-2xl mx-auto">We have a clear and structured plan for bringing Neuro Vision from prototype to deployment. Our timeline ensures methodical development, thorough testing, and a successful launch.</p>
+    <section id="market">
+        <div class="container">
+            <h2>Market Opportunity & Growth</h2>
+            <p style="text-align: center; max-width: 800px; margin: 0 auto 2rem; font-size: 1.1rem; color: #555;">The need for affordable assistive technology is immense. Neuro Vision is positioned to serve a large and growing market, both directly to consumers and through institutional partnerships.</p>
+            <div class="market-stats">
+                <div class="stat-card">
+                    <h3>Year 1</h3>
+                    <p>Initial Launch<br>₹50 Lakhs</p>
                 </div>
-                <div class="relative max-w-2xl mx-auto">
-                    <div class="border-l-2 border-blue-500 absolute h-full top-0" style="left: 4px;"></div>
-                    <div id="timeline-container" class="space-y-12">
-                    </div>
+                <div class="stat-card">
+                    <h3>Year 2</h3>
+                    <p>Market Expansion<br>₹2 Crores</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Year 3</h3>
+                    <p>Scale & Growth<br>₹5 Crores</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Year 4</h3>
+                    <p>Market Leader<br>₹10 Crores</p>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section id="team" class="py-16 md:py-24">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-12">
-                    <h3 class="text-3xl md:text-4xl font-bold text-gray-800">Meet the Team</h3>
-                    <p class="text-gray-600 mt-2">The innovative minds behind Neuro Vision.</p>
+    <section id="roadmap">
+        <div class="container">
+            <h2>Our Project Roadmap</h2>
+            <p style="text-align: center; max-width: 800px; margin: 0 auto 2rem; font-size: 1.1rem; color: #555;">We have a clear and structured plan for bringing Neuro Vision from prototype to deployment. Our timeline ensures methodical development, thorough testing, and a successful launch.</p>
+            <div class="roadmap">
+                <div class="roadmap-item">
+                    <h3>Phase 1: Research</h3>
+                    <p>Eye-tracking algorithms, user research, and prototype development with feedback from accessibility experts.</p>
                 </div>
-                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 max-w-4xl mx-auto text-center" id="team-grid">
+                <div class="roadmap-item">
+                    <h3>Phase 2: Development</h3>
+                    <p>Full system integration, IoT connectivity, and comprehensive testing with user groups.</p>
+                </div>
+                <div class="roadmap-item">
+                    <h3>Phase 3: Testing</h3>
+                    <p>Beta testing with real users, refinement based on feedback, and certification compliance.</p>
+                </div>
+                <div class="roadmap-item">
+                    <h3>Phase 4: Launch</h3>
+                    <p>Market launch, partnership establishment, and continuous improvement based on user needs.</p>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-    </main>
+    <section id="team" class="team-section">
+        <div class="container">
+            <h2>Meet the Innovator</h2>
+            <p style="text-align: center; max-width: 800px; margin: 0 auto 2rem; font-size: 1.1rem; color: #555;">The innovative mind behind Neuro Vision.</p>
+            <div class="team-member">
+                <h3>Anisetti Likthansh</h3>
+                <p>Founder & Lead Developer</p>
+            </div>
+        </div>
+    </section>
 
-    <footer class="bg-gray-800 text-white py-8">
-        <div class="container mx-auto px-6 text-center">
-            <p>&copy; 2025 Neuro Vision. All rights reserved.</p>
-            <p class="text-gray-400 mt-2">A Hands-Free Interface for a More Accessible World.</p>
+    <footer>
+        <div class="container">
+            <p>© 2025 Neuro Vision. All rights reserved.</p>
+            <p style="margin-top: 0.5rem; opacity: 0.8;">A Hands-Free Interface for a More Accessible World.</p>
         </div>
     </footer>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            
-            const problemSolutionData = [
-                {
-                    problem: "Difficulty in Communication",
-                    solution: "A cost-effective, easy-to-use system that empowers users to control digital environments independently."
-                },
-                {
-                    problem: "Expensive & Complex Tech",
-                    solution: "A virtual keyboard that enables typing by interpreting eye blinks, using only a standard webcam."
-                },
-                {
-                    problem: "Lack of Integrated Solutions",
-                    solution: "An IoT control module to manage devices like lights and fans with gaze and blink detection."
-                },
-                {
-                    problem: "Accessibility in Low-Income Regions",
-                    solution: "Neuro Vision is cost-effective, scalable, and can be implemented in basic setups without special hardware."
-                },
-                {
-                    problem: "Intrusive Wearable Sensors",
-                    solution: "Neuro Vision ensures non-intrusive interaction without any wearable devices, relying solely on a webcam."
-                }
-            ];
-
-            const tabData = {
-                keyboard: {
-                    title: "Smart Blink-Based Virtual Keyboard",
-                    content: "The core of our system. It allows for text input entirely through eye-blinks. A scanning cursor highlights keys, and a simple blink selects the character. It's intuitive, requires minimal training, and opens up a world of communication.",
-                    icon: '⌨️'
-                },
-                iot: {
-                    title: "IoT-Based Appliance Control",
-                    content: "Beyond communication, Neuro Vision provides environmental control. Users can operate household devices like lights and fans by directing their gaze and using a specific blink pattern, granting them greater independence in their daily lives.",
-                    icon: '💡'
-                },
-                tts: {
-                    title: "Text-to-Speech (TTS) Module",
-                    content: "To facilitate natural conversation, our TTS module converts typed messages into spoken output. The voice output is customizable, allowing users to select different languages, speeds, and tones to best suit their personality and needs.",
-                    icon: '🔊'
-                },
-                features: {
-                    title: "Additional Powerful Features",
-                    content: "<b>Multi-Language Support:</b> Supports regional languages and Unicode-based input for wider accessibility.<br><br><b>Planned Enhancements:</b> We are exploring emotion detection and biometric security through facial expression analysis to add further layers of functionality and personalization.",
-                    icon: '🌐'
-                }
-            };
-
-            const timelineData = [
-                { date: "24-07-2025", event: "Project Kick-off" },
-                { date: "13-08-2025", event: "Gather Requirements" },
-                { date: "02-09-2025", event: "System Design" },
-                { date: "22-09-2025", event: "Implementation - Eye-Blink & Gaze Logic" },
-                { date: "12-10-2025", event: "Typing + IoT Integration" },
-                { date: "22-10-2025", event: "Testing" },
-                { date: "01-11-2025", event: "Deployment" },
-                { date: "Ongoing", event: "Maintenance & Support" }
-            ];
-
-            const teamData = [
-                "Likthansh", "Dhanya", "Mokshitha", "Jhoshitha",
-                "D.kavya", "Nithin Kotala", "Madayanthikaa"
-            ];
-
-            const problemSolutionGrid = document.getElementById('problem-solution-grid');
-            problemSolutionData.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'card bg-white p-6 rounded-lg shadow-md';
-                card.innerHTML = `
-                    <h4 class="text-xl font-semibold text-gray-800 mb-2">${item.problem}</h4>
-                    <p class="text-gray-600">${item.solution}</p>
-                `;
-                problemSolutionGrid.appendChild(card);
-            });
-
-            const tabs = document.querySelectorAll('.tab');
-            const tabContent = document.getElementById('tab-content');
-
-            function updateTabContent(tabId) {
-                const data = tabData[tabId];
-                tabContent.innerHTML = `
-                    <div class="flex flex-col md:flex-row items-center gap-8">
-                        <div class="text-6xl">${data.icon}</div>
-                        <div>
-                            <h4 class="text-2xl font-semibold mb-2">${data.title}</h4>
-                            <p class="text-gray-600 leading-relaxed">${data.content}</p>
-                        </div>
-                    </div>
-                `;
-            }
-
-            tabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    tabs.forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
-                    updateTabContent(tab.dataset.tab);
-                });
-            });
-            updateTabContent('keyboard');
-
-            const timelineContainer = document.getElementById('timeline-container');
-            timelineData.forEach(item => {
-                const div = document.createElement('div');
-                div.className = 'timeline-item pl-8 relative';
-                div.innerHTML = `
-                    <p class="font-semibold text-gray-500 text-sm">${item.date}</p>
-                    <h5 class="font-bold text-lg">${item.event}</h5>
-                `;
-                timelineContainer.appendChild(div);
-            });
-            
-            const teamGrid = document.getElementById('team-grid');
-            teamData.forEach(name => {
-                const div = document.createElement('div');
-                div.className = 'bg-white p-4 rounded-lg shadow-md';
-                div.innerHTML = `<p class="font-semibold text-gray-700">${name}</p>`;
-                teamGrid.appendChild(div);
-            });
-
-            const marketCtx = document.getElementById('marketPotentialChart').getContext('2d');
-            new Chart(marketCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['Global Market ($B)', 'India Market (Cr)', 'Motor Disability Users', 'Elderly Users', 'Institutions'],
-                    datasets: [{
-                        label: 'Estimated Value / Users',
-                        data: [26.0, 2.68, 9.0, 6.0, 5.0],
-                        backgroundColor: [
-                            'rgba(75, 192, 192, 0.6)',
-                            'rgba(54, 162, 235, 0.6)',
-                            'rgba(255, 206, 86, 0.6)',
-                            'rgba(255, 99, 132, 0.6)',
-                            'rgba(153, 102, 255, 0.6)'
-                        ],
-                        borderColor: [
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(153, 102, 255, 1)'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    let label = context.dataset.label || '';
-                                    if (label) {
-                                        label += ': ';
-                                    }
-                                    let value = context.parsed.y;
-                                    if (context.label.includes('($B)')) {
-                                        label = `Global Market: $${value} Billion`;
-                                    } else if (context.label.includes('(Cr)')) {
-                                        label = `India Market: ${value} Crore Users`;
-                                    } else {
-                                         label = `${context.label}: ${value} Million Users`;
-                                    }
-                                    return label;
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Value ($B) / Users (Cr / Millions)'
-                            }
-                        }
-                    }
-                }
-            });
-
-            const revenueData = {
-                labels: ['Year 1', 'Year 2', 'Year 3', 'Year 4'],
-                fullData: [7, 16.5, 37.5, 100], 
-                datasets: [{
-                    label: 'Estimated Revenue (in Lakhs INR)',
-                    borderColor: '#4A90E2',
-                    backgroundColor: 'rgba(74, 144, 226, 0.2)',
-                    fill: true,
-                    tension: 0.4,
-                    pointBackgroundColor: '#4A90E2',
-                    pointRadius: 5,
-                }]
-            };
-
-            const revenueCtx = document.getElementById('revenueProjectionChart').getContext('2d');
-            const revenueChart = new Chart(revenueCtx, {
-                type: 'line',
-                data: {
-                    labels: [],
-                    datasets: revenueData.datasets
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Revenue (Lakhs INR)'
-                            }
-                        }
-                    }
-                }
-            });
-
-            const revenueButtons = document.querySelectorAll('#revenue-buttons button');
-            function updateRevenueChart(year) {
-                revenueChart.data.labels = revenueData.labels.slice(0, year);
-                revenueChart.data.datasets[0].data = revenueData.fullData.slice(0, year);
-                revenueChart.update();
-
-                revenueButtons.forEach(btn => {
-                    if (parseInt(btn.dataset.year) === year) {
-                        btn.classList.add('bg-blue-500', 'text-white');
-                        btn.classList.remove('bg-gray-200', 'text-gray-700');
-                    } else {
-                        btn.classList.remove('bg-blue-500', 'text-white');
-                        btn.classList.add('bg-gray-200', 'text-gray-700');
-                    }
-                });
-            }
-
-            revenueButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    updateRevenueChart(parseInt(button.dataset.year));
-                });
-            });
-            updateRevenueChart(1);
-
-            const navLinks = document.querySelectorAll('.nav-link');
-            const sections = document.querySelectorAll('main section');
-
-            window.addEventListener('scroll', () => {
-                let current = '';
-                sections.forEach(section => {
-                    const sectionTop = section.offsetTop;
-                    if (pageYOffset >= sectionTop - 100) {
-                        current = section.getAttribute('id');
-                    }
-                });
-
-                navLinks.forEach(link => {
-                    link.classList.remove('active');
-                    if (link.getAttribute('href').includes(current)) {
-                        link.classList.add('active');
-                    }
-                });
-            });
-
-        });
-    </script>
 </body>
 </html>
